@@ -41,7 +41,7 @@ func ExtractStringsFromFile(ctx context.Context, filenames []string, output, key
 
 	outputFile := os.Stdout
 	if output != "" && output != "-" {
-		outputFile, err = os.OpenFile(output, os.O_CREATE|os.O_WRONLY, 0o777)
+		outputFile, err = os.OpenFile(output, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o777)
 		if err != nil {
 			err = fmt.Errorf("failed to open output file: %w", err)
 			return
@@ -88,6 +88,7 @@ func ExtractStringsFromFile(ctx context.Context, filenames []string, output, key
 
 	// encode patch map into file
 	encoder := yaml.NewEncoder(outputFile)
+	defer encoder.Close()
 	err = encoder.Encode(patchMap)
 	if err != nil {
 		err = fmt.Errorf("failed to save patch map: %w", err)
@@ -137,7 +138,7 @@ func PatchStringsInFile(ctx context.Context, filenames []string, patchFilename, 
 		basename := filepath.Base(file.Name())
 
 		// open output file
-		outputFile, err = os.OpenFile(filepath.Join(outputDir, basename), os.O_CREATE|os.O_WRONLY, 0o777)
+		outputFile, err = os.OpenFile(filepath.Join(outputDir, basename), os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0o777)
 		if err != nil {
 			err = fmt.Errorf("failed to open output file: %w", err)
 			return
