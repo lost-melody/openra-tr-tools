@@ -44,9 +44,8 @@ var patchCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(extractCmd)
-	keyRegexp := `^[^:]+:[^.]+[.](Tooltip[.]Name|Buildable[.]Description|TooltipExtras[.][^.]+)$`
 	extractCmd.Flags().StringVarP(&extractOutputFile, "output", "o", "-", "Output file to write strings into.")
-	extractCmd.Flags().StringVarP(&extractRegexp, "regexp", "r", keyRegexp, "Regexp for keys to extract.")
+	extractCmd.Flags().StringVarP(&extractRegexp, "regexp", "r", pkg.DefaultKeyRegex, "Regexp for keys to extract.")
 
 	rootCmd.AddCommand(patchCmd)
 	patchCmd.Flags().StringVarP(&patchFile, "patch", "p", "-", "Patch file to read strings from.")

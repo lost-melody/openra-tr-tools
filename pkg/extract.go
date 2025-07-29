@@ -29,10 +29,13 @@ import (
 var _ struct{}
 
 const (
-	DefaultKeyRegex string = `^[^:]+:[^.]+[.](Tooltip[.]Name|Buildable[.]Description|TooltipExtras[.][^.]+)$`
+	DefaultKeyRegex string = `^[^:]+:[^.]+[.](Tooltip[.]Name|Buildable[.]Description|TooltipExtras(@[^.]+)?[.][^.]+)$`
 )
 
 func ExtractStringsFromFile(ctx context.Context, filenames []string, output, keyRegex string) (err error) {
+	if keyRegex == "" {
+		keyRegex = DefaultKeyRegex
+	}
 	regex, err := regexp.Compile(keyRegex)
 	if err != nil {
 		err = fmt.Errorf("failed to compile regexp: %w", err)
