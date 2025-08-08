@@ -45,7 +45,7 @@ var patchCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(extractCmd)
 	extractCmd.Flags().StringVarP(&extractOutputFile, "output", "o", "-", "Output file to write strings into.")
-	extractCmd.Flags().StringVarP(&extractRegexp, "regexp", "r", pkg.DefaultKeyRegex, "Regexp for keys to extract.")
+	extractCmd.Flags().StringVarP(&extractRegexp, "regexp", "r", "", "Regexp for keys to extract.")
 
 	rootCmd.AddCommand(patchCmd)
 	patchCmd.Flags().StringVarP(&patchFile, "patch", "p", "-", "Patch file to read strings from.")

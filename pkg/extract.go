@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 
+	"github.com/hedhyw/rex/pkg/rex"
+	"github.com/lost-melody/openra-tr-tools/assets"
 	yaml "gopkg.in/yaml.v3"
 )
 
@@ -28,15 +29,13 @@ import (
 // Ref: https://www.openra.net/book/modding/miniyaml/index.html
 var _ struct{}
 
-const (
-	DefaultKeyRegex string = `^[^:]+:[^.]+[.](Tooltip[.]Name|Buildable[.]Description|TooltipExtras(@[^.]+)?[.][^.]+)$`
-)
+var DefaultKeyRegex = assets.KeyRegexRulesUnits
 
 func ExtractStringsFromFile(ctx context.Context, filenames []string, output, keyRegex string) (err error) {
 	if keyRegex == "" {
 		keyRegex = DefaultKeyRegex
 	}
-	regex, err := regexp.Compile(keyRegex)
+	regex, err := rex.New(rex.Common.RawVerbose(keyRegex)).Compile()
 	if err != nil {
 		err = fmt.Errorf("failed to compile regexp: %w", err)
 		return
